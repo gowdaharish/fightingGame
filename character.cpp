@@ -17,22 +17,22 @@ void Character::setHealth(const int health)
     _health = health;
 }
 
-bool Character::attack(Character* character)
+bool Character::attack(Character &character)
 {
     // this shouldn't happen but lets take the precaution
-    if (character->name().empty())
+    if (character.name().empty())
     {
         cout << "can not attack a null character" << endl;
     }
 
     // a character cant attack himself
-    if (this->name() == character->name())
+    if (this->name() == character.name())
     {
         cout << "a character can not attack itself" << endl;
         return false;
     }
 
-    switch (getCharacter(character->name()))
+    switch (getCharacter(character.name()))
     {
     case 0:
     {
@@ -41,11 +41,11 @@ bool Character::attack(Character* character)
             return false;
 
         if (this->name() == "Orc")
-            character->setHealth(character->health() - 1);
+            character.setHealth(character.health() - 1);
         else
-            character->setHealth(character->health() - 3);
+            character.setHealth(character.health() - 3);
 
-        updateHealthMessage(this, character);
+        updateHealthMessage(*this, character);
         return true;
     }
 
@@ -65,8 +65,8 @@ bool Character::attack(Character* character)
             return  false;
         }
 
-        character->setHealth(character->health() - 2);
-        updateHealthMessage(this, character);
+        character.setHealth(character.health() - 2);
+        updateHealthMessage(*this, character);
         return true;
     }
 
@@ -93,14 +93,14 @@ int Character::getCharacter(const string name)
     return Chars::Unknown;
 }
 
-void Character::updateHealthMessage(const Character* giver, const Character* receiver)
+void Character::updateHealthMessage(const Character& giver, const Character& receiver)
 {
     // if the character is dead don't show the health status, instead just display that the character is dead
-    if (receiver->health() <= 0)
+    if (receiver.health() <= 0)
     {
-        cout << receiver->name() << " is dead" << endl;
+        cout << receiver.name() << " is dead" << endl;
         return;
     }
 
-    cout << giver->name() << " hits " << receiver->name() << ". " << receiver->name() << " health is: " << receiver->health() << endl;
+    cout << giver.name() << " hits " << receiver.name() << ". " << receiver.name() << " health is: " << receiver.health() << endl;
 }

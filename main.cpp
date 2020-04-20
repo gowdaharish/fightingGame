@@ -35,13 +35,13 @@ void attackOnHero(Character* orc, Character* dragon, Character* hero) {
     {
         if (orc->health() > 0 && timerOrc.elapsedSeconds() > 1.3)
         {
-            orc->attack(hero);
+            orc->attack(*hero);
             timerOrc.reset();
         }
 
         if (dragon->health() > 0 && timerDragon.elapsedSeconds() > 2.6)
         {
-            dragon->attack(hero);
+            dragon->attack(*hero);
             timerDragon.reset();
         }
 
@@ -65,11 +65,11 @@ int main()
 
     printInstructions();
 
-    Character* hero =  new Character{"Hero", HERO_HEALTH};
-    Character* orc =  new Character{"Orc", ORC_HEALTH};
-    Character* dragon = new Character{"Dragon", DRAGON_HEALTH};
+    Character hero{"Hero", HERO_HEALTH};
+    Character orc{"Orc", ORC_HEALTH};
+    Character dragon{"Dragon", DRAGON_HEALTH};
 
-    thread enemyThread(attackOnHero, orc, dragon, hero);
+    thread enemyThread(attackOnHero, &orc, &dragon, &hero);
 
     string name;
     while (true)
@@ -85,9 +85,9 @@ int main()
         else if (results[0] == "attack" || results[0] == "a")
         {
             if (results[1] == "orc")
-                hero->attack(orc);
+                hero.attack(orc);
             else if (results[1] == "dragon")
-                hero->attack(dragon);
+                hero.attack(dragon);
             else
                 cout << results[1] << "! there is no such character to attack" << endl;
         }
@@ -99,15 +99,12 @@ int main()
 
         // while the hero attacks Orc and Dragon, keep track of both of their health
         // if both of them are dead means hero has won
-        if (orc->health() <= 0 && dragon->health() <= 0)
+        if (orc.health() <= 0 && dragon.health() <= 0)
         {
             cout << "*********Hero won the game*********" << endl;
             break;
         }
     }
 
-    delete orc;
-    delete dragon;
-    delete hero;
     return 0;
 }

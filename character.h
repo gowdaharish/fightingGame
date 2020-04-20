@@ -10,7 +10,7 @@ public:
     string name() const {return _name;}
     int health() const {return _health;}
     void setHealth(const int health);
-    bool attack(Character* character);
+    bool attack(Character& character);
 
     enum Chars {
         Hero,
@@ -21,7 +21,7 @@ public:
 
 private:
     int getCharacter(const string name);
-    void updateHealthMessage(const Character* giver, const Character* receiver);
+    void updateHealthMessage(const Character& giver, const Character& receiver);
 
 private:
     string _name;
